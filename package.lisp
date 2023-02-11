@@ -1,5 +1,5 @@
 (defpackage syscat-cl-utilities
-  (:nicknames "sclut")
+  (:nicknames sclut)
   (:documentation "An assortment of utilities for Syscat, written in CL.")
   (:use #:cl)
-  (:export ))
+  (:export import-dependencies))
