@@ -70,14 +70,11 @@
                system-name
                license
                author)
-    ;; Ensure the application itself is present
     (ensure-resource-exists syscat-url
-                            "Applications"
-                            `(("uid" . ,system-name)))
-    ;; Ensure it's recorded as being a CL app
-    (ensure-relationship-exists syscat-url)))
+                            "ASDFsystems"
+                            `(("uid" . ,system-name)))))
 
-(defun import-dependencies (syscat-url packagename &key library-p)
+(defun import-dependencies (syscat-url packagename)
   "Walk a package's dependencies, and ensure they're all imported into Syscat.
    Assumes the parent package is an application, unless :library-p is set to t.
    Assumes all its dependencies are libraries."
