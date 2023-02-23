@@ -11,28 +11,6 @@
 ;; - asdf:system-depends-on
 ;; - asdf:system-license
 
-(defun make-http-request (url &key (request-method :POST) parameters)
-  "Make an HTTP request, defaulting to the POST method."
-  (declare (type string url)
-           (type keyword request-method)
-           (type list parameters))
-           (multiple-value-bind (body status-code)
-      (drakma:http-request url
-                           :method request-method
-                           :parameters parameters)
-      (cond
-        ;; Successful upload
-        ((= status-code 201)
-         (log:debug "Created successfully")
-         t)
-        ;; Resource is already there
-        ((= status-code 200)
-         (log:info "Resource or relationship is already present")
-         t)
-        ;; Something else
-        (t (log:warn "Unexpected response: ~A - ~A" status-code body)
-         nil))))
-
 (defun ensure-resource-exists (syscat-url resourcetype attributes)
   "Ensure that the specified resource exists, and returns t on success.
    This function assumes no authentication is required.

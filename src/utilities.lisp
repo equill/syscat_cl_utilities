@@ -11,3 +11,26 @@
                               (drakma:url-encode (car pair) :UTF-8)
                               (drakma:url-encode (cdr pair) :UTF-8)))
                   payload)))
+
+(defun make-http-request (url &key (request-method :POST) parameters)
+  "Make an HTTP request, defaulting to the POST method."
+  (declare (type string url)
+           (type keyword request-method)
+           (type list parameters))
+  (log:debug "Making HTTP request ~A" url)
+  (multiple-value-bind (body status-code)
+    (drakma:http-request url
+                         :method request-method
+                         :parameters parameters)
+    (cond
+      ;; Successful upload
+      ((= status-code 201)
+       (log:debug "Created successfully")
+       t)
+      ;; Resource is already there
+      ((= status-code 200)
+       (log:debug "Resource or relationship is already present")
+       t)
+      ;; Something else
+      (t (log:warn "Unexpected response: ~A - ~A" status-code body)
+         nil))))
