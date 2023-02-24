@@ -34,3 +34,8 @@
       ;; Something else
       (t (log:warn "Unexpected response: ~A - ~A" status-code body)
          nil))))
+
+(defun sanitise-uid (uid)
+  "Replace UID-unfriendly characters in UIDs with something safe.
+   Expects a string and returns another string."
+  (cl-ppcre:regex-replace-all "[/ ]" uid "_"))
